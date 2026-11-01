@@ -1,0 +1,13 @@
+{
+  "$GMScript":"v1",
+  "%Name":"collision_platformer",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"collision_platformer",
+  "parent":{
+    "name":"Collision",
+    "path":"folders/Scripts/Collision.yy",
+  },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}

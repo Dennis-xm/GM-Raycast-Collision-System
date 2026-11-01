@@ -1,0 +1,13 @@
+{
+  "$GMScript":"v1",
+  "%Name":"collision_geometry",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"collision_geometry",
+  "parent":{
+    "name":"Core",
+    "path":"folders/Scripts/Collision/Core.yy",
+  },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}

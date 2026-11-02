@@ -1,3 +1,3 @@
-scr_draw_self_grid();
+draw_self();
 
 collision_debug_visualize_shape(self);

@@ -44,6 +44,8 @@
   "resources":[
     {"id":{"name":"obj_camera","path":"objects/obj_camera/obj_camera.yy",},},
     {"id":{"name":"obj_circle","path":"objects/obj_circle/obj_circle.yy",},},
+    {"id":{"name":"obj_colbox_bouncing","path":"objects/obj_colbox_bouncing/obj_colbox_bouncing.yy",},},
+    {"id":{"name":"obj_colbox","path":"objects/obj_colbox/obj_colbox.yy",},},
     {"id":{"name":"obj_collider_dynamic","path":"objects/obj_collider_dynamic/obj_collider_dynamic.yy",},},
     {"id":{"name":"obj_collider_static","path":"objects/obj_collider_static/obj_collider_static.yy",},},
     {"id":{"name":"obj_examples_list","path":"objects/obj_examples_list/obj_examples_list.yy",},},

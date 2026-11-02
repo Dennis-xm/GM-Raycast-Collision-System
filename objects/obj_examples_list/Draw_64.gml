@@ -25,8 +25,24 @@ for(var yy = 0; yy < height_count; yy++)
 		}
 		
 		var thumbnail_spr = spr_examples_thumbnail;
+		var thumbnail_ind = lists[cur_category][|xx + first].thumbnail_id;
+		if(thumbnail_ind >= 0)
+		{
+			switch(cur_category)
+			{
+				case ExampleCategories.Basic:
+				{
+					thumbnail_spr = spr_thumbnails_basic;
+					break;
+				}
+			}
+		}
+		else
+		{
+			thumbnail_ind = 0;
+		}
 		
-		draw_sprite_ext(thumbnail_spr, 0, x_pos, y_pos, thumb_size, thumb_size, 0, c_white, 1);
+		draw_sprite_ext(thumbnail_spr, thumbnail_ind, x_pos, y_pos, thumb_size, thumb_size, 0, c_white, 1);
 		draw_text_ellipsis(x_pos + cell_width / 2, y_pos + 120 * thumb_size - 3, lists[cur_category][|xx + first].name, cell_width);
 		
 		if(!selected)
@@ -47,7 +63,23 @@ draw_set_color(c_white);
 draw_set_alpha(1);
 
 var thumbnail_spr = spr_examples_thumbnail;
-draw_sprite(thumbnail_spr, 0, TARGET_WIDTH - 185, 20);
+var thumbnail_ind = lists[cur_category][|cur_entry].thumbnail_id;
+if(thumbnail_ind >= 0)
+{
+	switch(cur_category)
+	{
+		case ExampleCategories.Basic:
+		{
+			thumbnail_spr = spr_thumbnails_basic;
+			break;
+		}
+	}
+}
+else
+{
+	thumbnail_ind = 0;
+}
+draw_sprite(thumbnail_spr, thumbnail_ind, TARGET_WIDTH - 185, 20);
 
 draw_text(TARGET_WIDTH - 105, 140, lists[cur_category][|cur_entry].name);
 

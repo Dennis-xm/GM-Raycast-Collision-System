@@ -11,10 +11,9 @@ for(var i = 0; i < ExampleCategories.Count; i++)
 	lists[i] = ds_list_create();
 }
 
-ds_list_add(lists[ExampleCategories.Basic], create_entry("Hub", Hub, -1, "A test of the examples list system. Lalalalalalalala! Lalalalal! Lalala! Hi how are you I am very good thank you very much how are you I am good thank you"));
-ds_list_add(lists[ExampleCategories.Basic], create_entry("testing", Hub));
-ds_list_add(lists[ExampleCategories.Basic], create_entry("another test", Hub));
-ds_list_add(lists[ExampleCategories.Basic], create_entry("hi", Room1));
+ds_list_add(lists[ExampleCategories.Basic], create_entry("Test 1", Hub, 0, "A test of the examples list system. Lalalalalalalala! Lalalalal! Lalala! Hi how are you I am very good thank you very much how are you I am good thank you"));
+ds_list_add(lists[ExampleCategories.Basic], create_entry("Test 2", Room1));
+
 ds_list_add(lists[ExampleCategories.Platformer], create_entry("Test", Room1));
 
 cur_category = ExampleCategories.Basic;

@@ -26,7 +26,7 @@
   "origin":4,
   "parent":{
     "name":"Sprites",
-    "path":"folders/Sprites.yy",
+    "path":"folders/Examples/Platformer/Shared/Sprites.yy",
   },
   "preMultiplyAlpha":false,
   "resourceType":"GMSprite",

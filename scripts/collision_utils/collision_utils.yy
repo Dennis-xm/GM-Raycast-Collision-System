@@ -5,8 +5,8 @@
   "isDnD":false,
   "name":"collision_utils",
   "parent":{
-    "name":"Core",
-    "path":"folders/Scripts/Collision/Core.yy",
+    "name":"Scripts",
+    "path":"folders/Libraries/Collision/Core/Scripts.yy",
   },
   "resourceType":"GMScript",
   "resourceVersion":"2.0",

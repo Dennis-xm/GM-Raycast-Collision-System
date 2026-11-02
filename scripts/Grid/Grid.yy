@@ -5,8 +5,8 @@
   "isDnD":false,
   "name":"Grid",
   "parent":{
-    "name":"Scripts",
-    "path":"folders/Scripts.yy",
+    "name":"Grid",
+    "path":"folders/Libraries/Grid.yy",
   },
   "resourceType":"GMScript",
   "resourceVersion":"2.0",

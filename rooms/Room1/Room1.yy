@@ -43,8 +43,8 @@
   ],
   "name":"Room1",
   "parent":{
-    "name":"Rooms",
-    "path":"folders/Rooms.yy",
+    "name":"Platformer",
+    "path":"folders/Examples/Platformer.yy",
   },
   "parentRoom":null,
   "physicsSettings":{

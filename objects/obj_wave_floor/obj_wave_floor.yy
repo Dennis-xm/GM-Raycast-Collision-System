@@ -10,8 +10,8 @@
   "name":"obj_wave_floor",
   "overriddenProperties":[],
   "parent":{
-    "name":"Colliders",
-    "path":"folders/Objects/Colliders.yy",
+    "name":"Objects",
+    "path":"folders/Examples/Platformer/Shared/Objects.yy",
   },
   "parentObjectId":{
     "name":"obj_collider_dynamic",

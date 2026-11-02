@@ -10,7 +10,7 @@
   "overriddenProperties":[],
   "parent":{
     "name":"Objects",
-    "path":"folders/Examples/Shared/Objects.yy",
+    "path":"folders/Debug/Objects.yy",
   },
   "parentObjectId":null,
   "persistent":false,

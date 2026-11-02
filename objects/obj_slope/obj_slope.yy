@@ -8,8 +8,8 @@
   "name":"obj_slope",
   "overriddenProperties":[],
   "parent":{
-    "name":"Colliders",
-    "path":"folders/Objects/Colliders.yy",
+    "name":"Objects",
+    "path":"folders/Examples/Shared/Objects.yy",
   },
   "parentObjectId":{
     "name":"obj_collider_static",

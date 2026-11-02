@@ -3,8 +3,8 @@
   "%Name":"shd_grid",
   "name":"shd_grid",
   "parent":{
-    "name":"Shaders",
-    "path":"folders/Shaders.yy",
+    "name":"Grid",
+    "path":"folders/Libraries/Grid.yy",
   },
   "resourceType":"GMShader",
   "resourceVersion":"2.0",

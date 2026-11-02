@@ -5,8 +5,8 @@
   "isDnD":false,
   "name":"collision_platformer",
   "parent":{
-    "name":"Collision",
-    "path":"folders/Scripts/Collision.yy",
+    "name":"Platformer",
+    "path":"folders/Libraries/Collision/Platformer.yy",
   },
   "resourceType":"GMScript",
   "resourceVersion":"2.0",

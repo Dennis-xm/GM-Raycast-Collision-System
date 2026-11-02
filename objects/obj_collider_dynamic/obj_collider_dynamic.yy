@@ -10,8 +10,8 @@
   "name":"obj_collider_dynamic",
   "overriddenProperties":[],
   "parent":{
-    "name":"Colliders",
-    "path":"folders/Objects/Colliders.yy",
+    "name":"Objects",
+    "path":"folders/Libraries/Collision/Core/Objects.yy",
   },
   "parentObjectId":{
     "name":"obj_collider_static",

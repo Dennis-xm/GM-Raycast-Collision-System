@@ -9,8 +9,8 @@
   "name":"obj_collider_static",
   "overriddenProperties":[],
   "parent":{
-    "name":"Colliders",
-    "path":"folders/Objects/Colliders.yy",
+    "name":"Objects",
+    "path":"folders/Libraries/Collision/Core/Objects.yy",
   },
   "parentObjectId":null,
   "persistent":false,

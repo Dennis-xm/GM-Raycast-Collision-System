@@ -32,7 +32,7 @@ function collision_platformer_create_body_empty()
 		
 		layouts : {},
 		cur_layout : 0,
-		attachment_ray : 0,
+		attachment_ray : 3,
 		stick : false
 	};
 }
@@ -67,11 +67,11 @@ function collision_platformer_generate_layout(mask)
 	
 	// Create the layout
 	return [
+		{ x_offset : bbox_center_x, y_offset : bbox_center_y + 2, direction : { x: 0, y : -1 }, distance : bbox_height / 2 + 2, group : layout_ray_group.head },
+		{ x_offset : bbox_center_x + 2, y_offset : bbox_center_y, direction : { x: -1, y : 0 }, distance : bbox_width / 2 + 2, group : layout_ray_group.left },
+		{ x_offset : bbox_center_x - 2, y_offset : bbox_center_y, direction : { x: 1, y : 0 }, distance : bbox_width / 2 + 2, group : layout_ray_group.right },
 		{ x_offset : bbox_center_x, y_offset : bbox_center_y - 2, direction : { x: 0, y : 1 }, distance : bbox_height / 2 + 2, group : layout_ray_group.feet },
-		{ x_offset : bbox_center_x, y_offset : bbox_center_y + bbox_height / 2, direction : { x: 0, y : 1 }, distance : 16, group : layout_ray_group.feet, type : layout_ray_type.stick, target : 0 }
-		//{ x_offset : bbox_center_x, y_offset : bbox_center_y + 2, direction : { x: 0, y : -1 }, distance : bbox_height / 2 + 2, group : layout_ray_group.head },
-		//{ x_offset : bbox_center_x + 2, y_offset : bbox_center_y, direction : { x: -1, y : 0 }, distance : bbox_width / 2 + 2, group : layout_ray_group.left },
-		//{ x_offset : bbox_center_x - 2, y_offset : bbox_center_y, direction : { x: 1, y : 0 }, distance : bbox_width / 2 + 2, group : layout_ray_group.right }
+		{ x_offset : bbox_center_x, y_offset : bbox_center_y + bbox_height / 2, direction : { x: 0, y : 1 }, distance : 16, group : layout_ray_group.feet, type : layout_ray_type.stick, target : 3 }
 	];
 }
 
@@ -103,13 +103,15 @@ function collision_platformer_test_collision(x, y, hsp, vsp, layout, orientation
 			if(variable_struct_exists(ray, "type") && ray.type == layout_ray_type.stick)
 			{
 				pos.x += hit.distance;
-				vel.x = min(vel.x, 0);
 			}
 			else
 			{
 				pos.x -= ray.distance - hit.distance;
-				vel.x = min(vel.x, 0);
 			}
+			vel.x = min(vel.x, 0);
+			
+			if(ray.group == layout_ray_group.feet && vel.x >= 0)
+				grounded = true;
 			
 			pos = collision_utils_local_to_world(pos, dir);
 			vel = collision_utils_local_to_world(vel, dir);
@@ -119,9 +121,6 @@ function collision_platformer_test_collision(x, y, hsp, vsp, layout, orientation
 			
 			hsp = vel.x;
 			vsp = vel.y;
-			
-			if(ray.group == layout_ray_group.feet)
-				grounded = true;
 		}
 		
 		if(i == attachment || (hit != undefined && variable_struct_exists(ray, "target") && i == ray.target))

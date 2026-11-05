@@ -1,0 +1,13 @@
+{
+  "$GMScript":"v1",
+  "%Name":"RaycastResult",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"RaycastResult",
+  "parent":{
+    "name":"Scripts",
+    "path":"folders/Libraries/Collision/Core/Scripts.yy",
+  },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}

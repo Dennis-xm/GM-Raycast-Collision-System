@@ -17,19 +17,19 @@ function collision_shape_library()
 {
     static shapes = [];
 
-	// In here we can define the different shapes
-	// Vertices just store a 2D position (x and y)
+	// In here we can define the different shapes.
+	// Vertices just store a 2D position (x and y, using a Vector2).
 	// Edges are what connect these vertices with A being the starting point and B being the end point.
 	// These use the ID of the vertices. Edges can also include additional information edge specific.
     if (array_length(shapes) == 0)
     {
         shapes[collision_shape.rectangle] = {
-            vertices : [ { x : 0, y : 0 }, { x : 32, y : 0 }, { x : 32, y : 32 }, { x : 0, y : 32 } ],
+            vertices : [ new Vector2(0, 0), new Vector2(32, 0), new Vector2(32, 32), new Vector2(0, 32) ],
             edges    : [ { a : 0, b : 1 }, { a : 1, b : 2 }, { a : 2, b : 3 }, { a : 3, b : 0 } ]
         };
 		
 		shapes[collision_shape.slope] = {
-            vertices : [ { x : 64, y : 0 }, { x : 64, y : 64 }, { x : 0, y : 64 } ],
+            vertices : [ new Vector2(64, 0), new Vector2(64, 64), new Vector2(0, 64) ],
             edges    : [ { a : 0, b : 1 }, { a : 1, b : 2 }, { a : 2, b : 0 } ]
         };
 
@@ -104,7 +104,7 @@ function collision_shape_update_vertices(object)
 					object.world_vertices[i].y = dy;
 				}
 				else
-					object.world_vertices[i] = { x : dx, y : dy };
+					object.world_vertices[i] = new Vector2(dx, dy);
 			}
 			return;
 		}

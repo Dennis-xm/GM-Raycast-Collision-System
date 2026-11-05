@@ -8,32 +8,32 @@
 /// A raycast against collision shapes and edges.
 /// @param {Real} x The X position of the origin.
 /// @param {Real} y The Y position of the origin.
-/// @param {Real|Struct} dir The direction the ray should travel in (either in degrees or as a normal struct).
+/// @param {Real|Struct} dir The direction the ray should travel in (either in degrees or as a normalized Vector2).
 /// @param {Real} distance The distance the ray should travel.
 /// @param {Array} ignore Instances to ignore.
 function collision_raycast(x, y, dir, distance, ignore = [])
 {
 	// We will use a normal for out calculations
 	if(is_real(dir))
-		dir = { x: dcos(dir), y : -dsin(dir) };
-	var x_dist = dir.x * distance;
-	var y_dist = dir.y * distance;
-	var x_end = x + x_dist;
-	var y_end = y + y_dist;
+		dir = new Vector2(dcos(dir), -dsin(dir));
+	
+	var dist = dir.clone().multiply(distance);
+	var start_pos = new Vector2(x, y);
+	var end_pos = start_pos.clone().add(dist);
 		
 	// Do AABB checks
 	var candidates = [];
 	var total_colliders = instance_number(obj_collider_static);
-	var ray_bbox = { x1 : min(x, x_end), y1 : min(y, y_end), x2 : max(x, x_end), y2 : max(y, y_end) };
+	var ray_bbox = { x1 : min(start_pos.x, end_pos.x), y1 : min(start_pos.y, end_pos.y), x2 : max(start_pos.x, end_pos.x), y2 : max(start_pos.y, end_pos.y) };
 	
 	for(var i = 0; i < total_colliders; i++)
 	{
 		// Instead of using the collision_shape_AABB_check function we include the raw code for optimization
 		var inst = instance_find(obj_collider_static, i);
-		if(inst.bbox_left < ray_bbox.x2 &&
-        inst.bbox_right > ray_bbox.x1 &&
-        inst.bbox_top < ray_bbox.y2 &&
-        inst.bbox_bottom > ray_bbox.y1)
+		if(inst.bbox_left <= ray_bbox.x2 &&
+        inst.bbox_right >= ray_bbox.x1 &&
+        inst.bbox_top <= ray_bbox.y2 &&
+        inst.bbox_bottom >= ray_bbox.y1)
 		{
 			if(!array_contains(ignore, inst))
 				array_push(candidates, inst);
@@ -62,24 +62,22 @@ function collision_raycast(x, y, dir, distance, ignore = [])
 				var b = verts[edges[e].b];
 				
 				// Check normals (optimized)
-				var dx = (b.x - a.x);
-			    var dy = (b.y - a.y);
-				if ((dir.x * dy * mirror) + (dir.y * -dx * mirror) >= 0)
+				var d = b.clone().subtract(a);
+				if ((dir.x * d.y * mirror) + (dir.y * -d.x * mirror) >= 0)
 					continue;
 					
 				// Check for an intersection
-				var denominator = (dy * x_dist) - (dx * y_dist);
+				var denominator = (d.y * dist.x) - (d.x * dist.y);
 				if (abs(denominator) < 0.0001) // Lines are practically parallel
 					continue;
 
-				var vx = a.x - x;
-				var vy = a.y - y;
+				var v = a.clone().subtract(start_pos);
 
-				var u = ((vx * y_dist) - (vy * x_dist)) / denominator;
+				var u = ((v.x * dist.y) - (v.y * dist.x)) / denominator;
 			    if (u < 0 || u > 1) // Intersection is outside the line segment
 					continue;
 
-			    var t = ((vx * dy) - (vy * dx)) / denominator;
+			    var t = ((v.x * d.y) - (v.y * d.x)) / denominator;
 				if (t >= 0 && t < closest_t) 
 			    {
 					closest_t = t;
@@ -100,20 +98,19 @@ function collision_raycast(x, y, dir, distance, ignore = [])
 		var inst = candidates[hit_obj];
 		var distance_traveled = distance * closest_t;
 		
-		var final_dx = hit_b.x - hit_a.x;
-		var final_dy = hit_b.y - hit_a.y;
+		var final_d = hit_b.clone().subtract(hit_a);
 		var mirror = sign(inst.image_xscale) * sign(inst.image_yscale);
-		var len = sqrt(final_dx * final_dx + final_dy * final_dy);
+		var len = sqrt(final_d.x * final_d.x + final_d.y * final_d.y);
 		
-		return {
-			point_x : x + (dir.x * distance_traveled),
-			point_y : y + (dir.y * distance_traveled),
-			distance : distance_traveled,
-			instance : inst,
-			normal : { x : (final_dy * mirror) / len, y : (-final_dx * mirror) / len },
-			edge_id : hit_edge,
-			edge_fraction : hit_u
-		};
+		var result = new RaycastResult();
+		result.point = dir.clone().multiply(distance_traveled).add(start_pos);
+		result.distance = distance_traveled;
+		result.instance = inst;
+		result.normal = new Vector2((final_d.y * mirror) / len, (-final_d.x * mirror) / len);
+		result.edge_id = hit_edge;
+		result.edge_fraction = hit_u;
+		
+		return result;
 	}
 	
 	return undefined;
@@ -122,7 +119,7 @@ function collision_raycast(x, y, dir, distance, ignore = [])
 /// A simpler more performant raycast that just returns true or false.
 /// @param {Real} x The X position of the origin.
 /// @param {Real} y The Y position of the origin.
-/// @param {Real|Struct} dir The direction the ray should travel in (either in degrees or as a normal struct).
+/// @param {Real|Struct} dir The direction the ray should travel in (either in degrees or as a normalized Vector2).
 /// @param {Real} distance The distance the ray should travel.
 /// @param {Array} ignore Instances to ignore.
 function collision_raycast_check(x, y, dir, distance, ignore = [])
@@ -131,25 +128,25 @@ function collision_raycast_check(x, y, dir, distance, ignore = [])
 	
 	// We will use a normal for out calculations
 	if(is_real(dir))
-		dir = { x: dcos(dir), y : -dsin(dir) };
-	var x_dist = dir.x * distance;
-	var y_dist = dir.y * distance;
-	var x_end = x + x_dist;
-	var y_end = y + y_dist;
+		dir = new Vector2(dcos(dir), -dsin(dir));
+	
+	var dist = dir.clone.multiply(distance);
+	var start_pos = new Vector2(x, y);
+	var end_pos = start_pos.clone().add(dist);
 		
 	// Do AABB checks
 	var candidates = [];
 	var total_colliders = instance_number(obj_collider_static);
-	var ray_bbox = { x1 : min(x, x_end), y1 : min(y, y_end), x2 : max(x, x_end), y2 : max(y, y_end) };
+	var ray_bbox = { x1 : min(start_pos.x, end_pos.x), y1 : min(start_pos.y, end_pos.y), x2 : max(start_pos.x, end_pos.x), y2 : max(start_pos.y, end_pos.y) };
 	
 	for(var i = 0; i < total_colliders; i++)
 	{
 		// Instead of using the collision_shape_AABB_check function we include the raw code for optimization
 		var inst = instance_find(obj_collider_static, i);
-		if(inst.bbox_left < ray_bbox.x2 &&
-        inst.bbox_right > ray_bbox.x1 &&
-        inst.bbox_top < ray_bbox.y2 &&
-        inst.bbox_bottom > ray_bbox.y1)
+		if(inst.bbox_left <= ray_bbox.x2 &&
+        inst.bbox_right >= ray_bbox.x1 &&
+        inst.bbox_top <= ray_bbox.y2 &&
+        inst.bbox_bottom >= ray_bbox.y1)
 		{
 			if(!array_contains(ignore, inst))
 				array_push(candidates, inst);
@@ -171,24 +168,22 @@ function collision_raycast_check(x, y, dir, distance, ignore = [])
 				var b = verts[edges[e].b];
 				
 				// Check normals (optimized)
-				var dx = (b.x - a.x);
-			    var dy = (b.y - a.y);
-				if ((dir.x * dy * mirror) + (dir.y * -dx * mirror) >= 0)
+				var d = b.clone().subtract(a);
+				if ((dir.x * d.y * mirror) + (dir.y * -d.x * mirror) >= 0)
 					continue;
 					
 				// Check for an intersection
-				var denominator = (dy * x_dist) - (dx * y_dist);
+				var denominator = (d.y * dist.x) - (d.x * dist.y);
 				if (abs(denominator) < 0.0001) // Lines are practically parallel
 					continue;
 
-				var vx = a.x - x;
-				var vy = a.y - y;
+				var v = a.clone().subtract(start_pos);
 
-				var u = ((vx * y_dist) - (vy * x_dist)) / denominator;
+				var u = ((v.x * dist.y) - (v.y * dist.x)) / denominator;
 			    if (u < 0 || u > 1) // Intersection is outside the line segment
 					continue;
 
-			    var t = ((vx * dy) - (vy * dx)) / denominator;
+			    var t = ((v.x * d.y) - (v.y * d.x)) / denominator;
 				if (t >= 0 && t < 1.0) 
 			    {
 					return true;

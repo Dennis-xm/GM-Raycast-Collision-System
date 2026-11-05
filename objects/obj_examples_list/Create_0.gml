@@ -14,6 +14,7 @@ for(var i = 0; i < ExampleCategories.Count; i++)
 ds_list_add(lists[ExampleCategories.Basic], create_entry("Test 1", Hub, 0, "A test of the examples list system. Lalalalalalalala! Lalalalal! Lalala! Hi how are you I am very good thank you very much how are you I am good thank you"));
 ds_list_add(lists[ExampleCategories.Basic], create_entry("Test 2", Room1));
 ds_list_add(lists[ExampleCategories.Basic], create_entry("Vector Test", VectorTest, -1, "Creating and displaying different Vector2 types (using constructors in GML), using its different functions."));
+ds_list_add(lists[ExampleCategories.Basic], create_entry("Raycast Test", RaycastTest, -1, "Testing raycast results against different colliders."));
 
 ds_list_add(lists[ExampleCategories.Platformer], create_entry("Test", Room1));
 

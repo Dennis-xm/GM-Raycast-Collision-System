@@ -108,8 +108,9 @@ function Vector2(_x, _y) constructor
 		gml_pragma("forceinline");
 		
 		var right = other_vector.normalize();
+		var old_x = x;
 		x = dot_product(x, y, right.x, right.y);
-	    y = dot_product(x, y, -right.y, right.x);
+	    y = dot_product(old_x, y, -right.y, right.x);
 
 	    return self;
 	}
@@ -120,9 +121,17 @@ function Vector2(_x, _y) constructor
 		gml_pragma("forceinline");
 		
 		var right = other_vector.normalize();
+		var old_x = x;
 		x = x * right.x + y * -right.y;
-	    y = x * right.y + y * right.x;
+	    y = old_x * right.y + y * right.x;
 		
 		return self;
+	}
+	
+	/// Gets a perpendicular version of the vector (always rotated 90 degrees counter-clockwise)
+	static perpendicular = function()
+	{
+		gml_pragma("forceinline");
+		return new Vector2(y, -x);
 	}
 }

@@ -21,7 +21,7 @@ function collision_debug_visualize_shape(object)
 			var b = verts[edge.b];
 			
 			// Draw normal (make this optional later)
-			var norm = collision_utils_get_normal(a, b, mirrored);
+			var norm = b.clone().subtract(a).normalize().perpendicular().multiply(mirrored);
 			draw_set_color(c_aqua);
 			draw_line((a.x + b.x) / 2, (a.y + b.y) / 2, (a.x + b.x) / 2 + norm.x * 4, (a.y + b.y) / 2 + norm.y * 4);
 			

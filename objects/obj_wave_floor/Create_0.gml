@@ -8,7 +8,7 @@ vertices = array_create(vertex_count);
 edges = array_create(vertex_count - 1);
 for(var i = 0; i < vertex_count; i++)
 {
-	vertices[i] = { x : i * vert_width, y : vert_height / 2 };
+	vertices[i] = new Vector2(i * vert_width, vert_height / 2);
 	if(i < vertex_count - 1)
 		edges[i] = { a : i, b : i+1 };
 }
@@ -31,12 +31,12 @@ function update_body(inst, body, attachment)
 		
 		var pos_x = lerp(a.x, b.x, attachment.edge_fraction) + 0.5;
 		var pos_y = lerp(a.y, b.y, attachment.edge_fraction) + 0.5;
-		var dir = collision_utils_get_direction(a, b);
+		var dir = b.clone().subtract(a);
 		
 		with(inst)
 		{
 			if(body.can_rotate)
-				body.right = collision_utils_normalize(dir); // To be sure we get a normalized vector
+				body.right = dir.normalize();
 			x = pos_x + 20 * body.right.y;
 			y = pos_y + 20 * -body.right.x;
 		}

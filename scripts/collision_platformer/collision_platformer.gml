@@ -27,7 +27,7 @@ function collision_platformer_create_body_empty()
 {
 	return {
 		active : true,
-		right : { x : 1, y : 0 },
+		right : new Vector2(1, 0),
 		can_rotate : false,
 		
 		layouts : {},
@@ -67,11 +67,11 @@ function collision_platformer_generate_layout(mask)
 	
 	// Create the layout
 	return [
-		{ x_offset : bbox_center_x, y_offset : bbox_center_y + 2, direction : { x: 0, y : -1 }, distance : bbox_height / 2 + 2, group : layout_ray_group.head },
-		{ x_offset : bbox_center_x + 2, y_offset : bbox_center_y, direction : { x: -1, y : 0 }, distance : bbox_width / 2 + 2, group : layout_ray_group.left },
-		{ x_offset : bbox_center_x - 2, y_offset : bbox_center_y, direction : { x: 1, y : 0 }, distance : bbox_width / 2 + 2, group : layout_ray_group.right },
-		{ x_offset : bbox_center_x, y_offset : bbox_center_y - 2, direction : { x: 0, y : 1 }, distance : bbox_height / 2 + 2, group : layout_ray_group.feet },
-		{ x_offset : bbox_center_x, y_offset : bbox_center_y + bbox_height / 2, direction : { x: 0, y : 1 }, distance : 16, group : layout_ray_group.feet, type : layout_ray_type.stick, target : 3 }
+		{ x_offset : bbox_center_x, y_offset : bbox_center_y + 2, direction : new Vector2(0, -1), distance : bbox_height / 2 + 2, group : layout_ray_group.head },
+		{ x_offset : bbox_center_x + 2, y_offset : bbox_center_y, direction : new Vector2(-1, 0), distance : bbox_width / 2 + 2, group : layout_ray_group.left },
+		{ x_offset : bbox_center_x - 2, y_offset : bbox_center_y, direction : new Vector2(1, 0), distance : bbox_width / 2 + 2, group : layout_ray_group.right },
+		{ x_offset : bbox_center_x, y_offset : bbox_center_y - 2, direction : new Vector2(0, 1), distance : bbox_height / 2 + 2, group : layout_ray_group.feet },
+		{ x_offset : bbox_center_x, y_offset : bbox_center_y + bbox_height / 2, direction : new Vector2(0, 1), distance : 16, group : layout_ray_group.feet, type : layout_ray_type.stick, target : 3 }
 	];
 }
 
@@ -90,15 +90,15 @@ function collision_platformer_test_collision(x, y, hsp, vsp, layout, orientation
 		if(variable_struct_exists(ray, "type") && ray.type == layout_ray_type.stick && !stick)
 			continue;
 		
-		var offset = collision_utils_local_to_world({ x : ray.x_offset, y : ray.y_offset }, orientation);
-		var dir = collision_utils_local_to_world(ray.direction, orientation);
+		var offset = new Vector2(ray.x_offset, ray.y_offset).to_world(orientation);
+		var dir = ray.direction.clone().to_world(orientation);
 		var hit = collision_raycast(x + offset.x, y + offset.y, dir, ray.distance, ignore);
 		if(hit != undefined)
 		{
 			col = true;
 			
-			var pos = collision_utils_world_to_local({ x : x, y : y }, dir);
-			var vel = collision_utils_world_to_local({ x : hsp, y : vsp }, dir);
+			var pos = new Vector2(x, y).to_local(dir);
+			var vel = new Vector2(hsp, vsp).to_local(dir);
 			
 			if(variable_struct_exists(ray, "type") && ray.type == layout_ray_type.stick)
 			{
@@ -113,8 +113,8 @@ function collision_platformer_test_collision(x, y, hsp, vsp, layout, orientation
 			if(ray.group == layout_ray_group.feet && vel.x >= 0)
 				grounded = true;
 			
-			pos = collision_utils_local_to_world(pos, dir);
-			vel = collision_utils_local_to_world(vel, dir);
+			pos.to_world(dir);
+			vel.to_world(dir);
 			
 			x = pos.x;
 			y = pos.y;
@@ -180,22 +180,22 @@ function collision_platformer_collide(body, ignore = [], debug_visualize = false
 function collision_platformer_rotate_body(body, right, pivot_x, pivot_y)
 {
 	var dif = collision_utils_subtract_normal_rotation(right, body.right);
-	var off = collision_utils_local_to_world({ x : x - pivot_x, y : y - pivot_y }, dif);
+	var off = new Vector2(x - pivot_x, y - pivot_y).to_world(dif);
 	
 	x = pivot_x + off.x;
 	y = pivot_y + off.y;
-	body.right = collision_utils_normalize(right); // Just to be extra safe
+	body.right = right.normalize(); // Just to be extra safe
 	
 	return body;
 }
 
 /// Visualizes a body layouts rays.
-function collision_debug_visualize_body_layout(layout, x, y, orientation = { x : 1, y : 0 })
+function collision_debug_visualize_body_layout(layout, x, y, orientation = new Vector2(1, 0))
 {
 	for(var i = 0; i < array_length(layout); i++)
 	{
 		var ray = layout[i];
-		var offset = collision_utils_local_to_world({ x : ray.x_offset, y : ray.y_offset }, orientation);
-		collision_debug_draw_ray(x + offset.x, y + offset.y, collision_utils_local_to_world(ray.direction, orientation), ray.distance, c_olive);
+		var offset = new Vector2(ray.x_offset, ray.y_offset).to_world(orientation);
+		collision_debug_draw_ray(x + offset.x, y + offset.y, ray.direction.clone().to_world(orientation), ray.distance, c_olive);
 	}
 }

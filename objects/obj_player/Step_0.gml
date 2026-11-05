@@ -4,7 +4,7 @@ if(global.game_speed <= 0)
 if(attachment != undefined && (attachment.instance.object_index == obj_collider_dynamic || object_is_ancestor(attachment.instance.object_index, obj_collider_dynamic)))
 	body = attachment.instance.update_body(self, body, attachment);
 else
-	body = collision_platformer_rotate_body(body, { x : 1, y : 0 }, x, y);
+	body = collision_platformer_rotate_body(body, new Vector2(1, 0), x, y);
 
 hsp = spd * (keyboard_check(vk_right) - keyboard_check(vk_left));
 if(!grounded)

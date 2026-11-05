@@ -17,7 +17,7 @@ for(var i = 0; i < edge_count; i++)
 {
 	// Collision shape
 	var ang = (360 / edge_count) * i;
-	vertices[i] = { x : dcos(ang) * 64, y : dsin(ang) * 64 };
+	vertices[i] = new Vector2(dcos(ang) * 64, dsin(ang) * 64);
 	
 	if(i >= edge_count - 1)
 		edges[i] = { a : i, b : 0 };
@@ -25,6 +25,6 @@ for(var i = 0; i < edge_count; i++)
 		edges[i] = { a : i, b : i+1 };
 		
 	// Collision body
-	array_push(body.layouts[$ "default"], { x_offset : 0, y_offset : 0, direction : { x : dcos(ang) , y : dsin(ang) }, distance : 64, group : layout_ray_group.dynamic });
+	array_push(body.layouts[$ "default"], { x_offset : 0, y_offset : 0, direction : new Vector2(dcos(ang) , dsin(ang)), distance : 64, group : layout_ray_group.dynamic });
 }
 collision_shape_create_world_vertices();

@@ -1,5 +1,5 @@
 image_angle += 0.2;
-body.orientation = { x : dcos(image_angle), y : -dsin(image_angle) };
+body.orientation = new Vector2(dcos(image_angle), -dsin(image_angle));
 collision_shape_update_vertices(self);
 
 vsp = min(vsp + 0.1, 20);

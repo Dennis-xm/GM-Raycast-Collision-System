@@ -1,4 +1,4 @@
-if(!mouse_check_button(0))
+if(mouse_check_button(mb_middle) || mouse_check_button(mb_right))
 {
 	x -= (window_mouse_get_delta_x() / 2) * zoom;
 	y -= (window_mouse_get_delta_y() / 2) * zoom;
